@@ -178,7 +178,7 @@ header h1 {
 
 /* 各位の桁数ラベル (digitLabel) */
 .digitLabel {
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   font-weight: bold;
   margin-top: 4px;
   width: 100%;
