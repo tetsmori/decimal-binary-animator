@@ -1,0 +1,314 @@
+/* 全体リセット */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "メイリオ", sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.6;
+  padding: 10px;
+}
+
+/* ヘッダー */
+header {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mode-select label {
+  margin: 0 0.5rem;
+  font-size: 1rem;
+}
+
+/* コントロール部 */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.controls button {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.controls button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.controls button:hover:not(:disabled) {
+  background-color: #45a049;
+}
+
+.controls label,
+.controls span {
+  font-size: 1rem;
+}
+
+.controls input[type="range"] {
+  cursor: pointer;
+}
+
+/* アニメーション領域 */
+#animationArea {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* 両カラムの固定高さ（見出し＋コイン10枚＋ラベル分） */
+/* コイン10枚分の高さ＝10×48px＝480px、上下 padding で＋8px＝488px */
+/* 見出し(40px)＋ラベル(24px) 合計 64px と余裕を見て 560px を固定高さに */
+#stackArea,
+#shelfArea {
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 6px;
+  width: 45%;
+  height: 560px;
+  /* カラム全体を完全に固定 */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* カラム全体ではスクロールしない */
+}
+
+/* 山積みエリア */
+#stackArea h2 {
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  height: 40px;
+  /* 見出し分の高さを固定 */
+  line-height: 40px;
+  /* テキストを垂直中央に */
+}
+
+/* 山積みのコイン表示領域を固定高さ (488px) に */
+#stackContainer {
+  height: 488px;
+  /* コイン10枚分の高さ */
+  padding: 8px;
+  /* 内側の余白（上下それぞれ4pxずつ） */
+  display: grid;
+  grid-template-columns: repeat(10, 40px);
+  grid-auto-rows: 40px;
+  gap: 4px;
+  justify-content: center;
+  overflow-y: auto;
+  /* コイン100枚があふれたときに縦スクロール */
+}
+
+/* 山積み領域のコインは常に可視化する */
+#stackContainer .token {
+  transform: translateY(0);
+  opacity: 1;
+  animation: none;
+}
+
+/* 並べたコインエリア */
+#shelfArea h2 {
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  height: 40px;
+  line-height: 40px;
+}
+
+/* 各位ごとの列コンテナ */
+#shelfContainer {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: row-reverse;
+  /* 右端が1の位 */
+  gap: 10px;
+  /* padding: 8px; */
+  /* ← 不要な左右パディングは削除 */
+  overflow: hidden;
+  /* カラム全体ではスクロールしない */
+}
+
+/* 1つの位を表す列 */
+.placeColumn {
+  display: flex;
+  flex-direction: column;
+  /* 上から下へ配置 (coinStack 上、digitLabel 下) */
+  justify-content: space-between;
+  align-items: center;
+  width: 48px;
+  /* コイン1枚(40px) + 水平余白(左右各4pxずつ)を想定して約48pxに固定 */
+  height: 100%;
+  /* 親 (#shelfContainer + 見出し分) に合わせる */
+}
+
+/* coinStack 部分: 下から上に積み上げ */
+.coinStack {
+  height: 488px;
+  /* コイン10枚分 */
+  display: flex;
+  flex-direction: column-reverse;
+  /* 下から上へ積む */
+  align-items: center;
+  width: 100%;
+  overflow-y: auto;
+  /* 10枚を超えたら縦スクロール */
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+/* 各位の桁数ラベル (digitLabel) */
+.digitLabel {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-top: 4px;
+  width: 100%;
+  /* 列と同じ幅をとる */
+  text-align: center;
+  /* 中央寄せ */
+  height: 24px;
+  /* 約24px固定 */
+  line-height: 24px;
+  /* テキストを中央に */
+  color: #333;
+}
+
+/* コイン（トークン）のスタイル */
+.token {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 2px solid #666;
+  border-radius: 50%;
+  background-color: #ffeb3b;
+  /* 黄色のコイン風 */
+  margin: 4px 0;
+  /* コインの上下マージン合計8px */
+  font-weight: bold;
+  color: #333;
+  font-size: 0.9rem;
+  /* 初期状態は下に隠しておく */
+  transform: translateY(100%);
+  opacity: 0;
+  animation-fill-mode: forwards;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* 各位ごとに色を変える例 */
+.token.level-1 {
+  background-color: #ffeb3b;
+  /* 1の位  */
+}
+
+.token.level-2 {
+  background-color: #ff9800;
+  /* 10の位/2の位  */
+}
+
+.token.level-3 {
+  background-color: #f44336;
+  /* 100の位/4の位  */
+}
+
+.token.level-4 {
+  background-color: #3f51b5;
+  /* 1000の位/8の位  */
+}
+
+.token.level-5 {
+  background-color: #009688;
+  /* 10000の位/16の位 */
+}
+
+.token.level-6 {
+  background-color: #795548;
+  /* 100000の位/32の位 */
+}
+
+.token.level-7 {
+  background-color: #607d8b;
+  /* 1000000の位/64の位 */
+}
+
+/* 追加時のスライドアップアニメーション */
+@keyframes slideUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* キャリー（繰り上がり）時のスライド＆ハイライト */
+@keyframes slideLeft {
+  0% {
+    transform: translateX(40px) scale(1.2);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translateX(20px) scale(1.4);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes carryHighlight {
+  0% {
+    border-color: #ffd700;
+  }
+
+  50% {
+    border-color: #ff0000;
+  }
+
+  100% {
+    border-color: #666;
+  }
+}
+
+.token.carry {
+  animation: slideLeft 0.5s ease, carryHighlight 0.5s ease;
+}
+
+/* フェードアウト（削除時） */
+.token.fadeOut {
+  opacity: 0;
+}
+
+/* フッター */
+footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}

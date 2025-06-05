@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>10進法・2進法アニメーター</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>10進法・2進法アニメーター</h1>
+    <div class="mode-select">
+      <label>
+        <input type="radio" name="base" value="10" checked />
+        10進法モード
+      </label>
+      <label>
+        <input type="radio" name="base" value="2" />
+        2進法モード
+      </label>
+    </div>
+  </header>
+
+  <main>
+    <!-- ツールバー -->
+    <div class="controls">
+      <button id="startButton">スタート</button>
+      <button id="pauseButton" disabled>一時停止</button>
+      <button id="resetButton" disabled>リセット</button>
+      <label for="speedSlider">速度：</label>
+      <input type="range" id="speedSlider" min="100" max="1000" step="100" value="500" />
+      <span class="current-value"
+        >現在の値：<span id="currentValue">0</span></span
+      >
+    </div>
+
+    <!-- アニメーション表示領域 -->
+    <div id="animationArea">
+      <!-- 山積みエリア -->
+      <div id="stackArea">
+        <h2>バラバラ状態のコイン</h2>
+        <div id="stackContainer"></div>
+      </div>
+
+      <!-- 並べたコインエリア -->
+      <div id="shelfArea">
+        <h2>10進法 or 2進法で整理したコインの並び</h2>
+        <div id="shelfContainer"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
